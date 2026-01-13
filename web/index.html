@@ -3,85 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Takipİlaç | Akıllı Sağlık Asistanı</title>
+    <title>Takipİlaç Asistanı | Uybat Tech</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
-        /* iOS/Android şık çerçeve tasarımı */
-        .app-card { 
-            background: linear-gradient(145deg, #1e293b, #0f172a); 
-            border: 2px solid #334155; 
-            border-radius: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        /* iOS/Android Premium Çerçeve Tasarımı */
+        .app-container { 
+            background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid #334155;
+            border-radius: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .status-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .status-btn:active { transform: scale(0.95); }
-        .hidden-time { display: none; }
-        .show-time { display: block; animation: slideDown 0.4s ease-out; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .status-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .status-card:active { transform: scale(0.92); }
+        .time-grid { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+        .time-grid.active { display: grid; opacity: 1; transform: translateY(0); }
+        .glass-nav { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); border-top: 1px solid #334155; }
     </style>
 </head>
-<body class="p-4">
-    <div class="flex justify-end mb-4">
-        <button class="text-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/30 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest">
-            <i class="fas fa-user-plus mr-1"></i> Giriş Yap / Kayıt Ol
-        </button>
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-8">
+
+    <div class="w-full max-w-md app-container p-8 relative overflow-hidden">
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Canlı Asistan</span>
+            </div>
+            <button class="text-[9px] bg-blue-600/20 text-blue-400 border border-blue-500/40 px-4 py-2 rounded-full font-black hover:bg-blue-600 hover:text-white transition-all">
+                GİRİŞ YAP / ÜYE OL
+            </button>
+        </div>
+
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 tracking-tighter">Takipİlaç</h1>
+            <p class="text-[10px] text-slate-500 mt-2 uppercase font-medium tracking-[0.3em]">Sağlığınız Bize Emanet</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mb-10">
+            <button onclick="showSchedule('aç')" class="status-card bg-emerald-500/5 border-2 border-emerald-500/20 p-8 rounded-[2.5rem] hover:border-emerald-500 group">
+                <i class="fas fa-apple-whole text-4xl text-emerald-500 mb-3 group-hover:rotate-12 transition-transform"></i>
+                <span class="block text-xs font-black uppercase tracking-widest">AÇ</span>
+            </button>
+            <button onclick="showSchedule('tok')" class="status-card bg-orange-500/5 border-2 border-orange-500/20 p-8 rounded-[2.5rem] hover:border-orange-500 group">
+                <i class="fas fa-utensils text-4xl text-orange-500 mb-3 group-hover:-rotate-12 transition-transform"></i>
+                <span class="block text-xs font-black uppercase tracking-widest">TOK</span>
+            </button>
+        </div>
+
+        <div id="scheduleArea" class="time-grid grid-cols-2 gap-4 mb-10">
+            <div class="col-span-2 text-center mb-2">
+                <span id="typeLabel" class="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em]"></span>
+            </div>
+            <button class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-left hover:border-blue-500 transition-all">
+                <i class="fas fa-sun text-yellow-500 mr-2"></i>
+                <span class="text-xs font-bold">Sabah</span>
+                <span class="block text-[9px] text-slate-500">08:30</span>
+            </button>
+            <button class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-left hover:border-blue-500 transition-all">
+                <i class="fas fa-cloud-sun text-orange-400 mr-2"></i>
+                <span class="text-xs font-bold">Öğle</span>
+                <span class="block text-[9px] text-slate-500">13:00</span>
+            </button>
+            <button class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-left hover:border-blue-500 transition-all">
+                <i class="fas fa-cloud-moon text-blue-400 mr-2"></i>
+                <span class="text-xs font-bold">Akşam</span>
+                <span class="block text-[9px] text-slate-500">19:30</span>
+            </button>
+            <button class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-left hover:border-blue-500 transition-all">
+                <i class="fas fa-moon text-purple-500 mr-2"></i>
+                <span class="text-xs font-bold">Gece</span>
+                <span class="block text-[9px] text-slate-500">23:00</span>
+            </button>
+        </div>
+
+        <div class="space-y-4">
+            <input type="text" placeholder="İlacın adını veya türünü yazın..." class="w-full bg-slate-900 border-2 border-slate-800 p-5 rounded-3xl outline-none focus:border-blue-500 transition-all text-sm shadow-inner">
+            <button class="w-full bg-blue-600 p-5 rounded-3xl font-black uppercase text-xs tracking-widest shadow-lg shadow-blue-900/40 active:scale-95 transition-all">
+                ASİSTANI AKTİFLEŞTİR
+            </button>
+        </div>
     </div>
 
-    <main class="max-w-md mx-auto app-card p-8 mt-4 text-center">
-        <div class="mb-8">
-            <h1 class="text-3xl font-black text-blue-400 tracking-tighter">Takipİlaç</h1>
-            <p class="text-slate-500 text-xs italic mt-1 uppercase">Dürüst Sağlık Takipçiniz</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <button onclick="toggleTimes('ac')" class="status-btn bg-emerald-500/10 border-2 border-emerald-500/50 p-6 rounded-3xl group">
-                <i class="fas fa-apple-whole text-3xl text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="block font-bold uppercase text-sm">AÇ KARNINA</span>
-            </button>
-            <button onclick="toggleTimes('tok')" class="status-btn bg-orange-500/10 border-2 border-orange-500/50 p-6 rounded-3xl group">
-                <i class="fas fa-utensils text-3xl text-orange-400 mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="block font-bold uppercase text-sm">TOK KARNINA</span>
-            </button>
-        </div>
-
-        <div id="timeSelector" class="hidden-time space-y-3 mb-8">
-            <p id="selectionTitle" class="text-xs font-bold text-slate-400 uppercase mb-4"></p>
-            <div class="grid grid-cols-2 gap-3">
-                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
-                    <i class="fas fa-sun mr-2 text-yellow-500"></i>Sabah <span class="block text-[10px] text-slate-500">08:00</span>
-                </button>
-                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
-                    <i class="fas fa-cloud-sun mr-2 text-orange-400"></i>Öğle <span class="block text-[10px] text-slate-500">13:00</span>
-                </button>
-                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
-                    <i class="fas fa-cloud-moon mr-2 text-blue-400"></i>Akşam <span class="block text-[10px] text-slate-500">19:00</span>
-                </button>
-                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
-                    <i class="fas fa-moon mr-2 text-purple-500"></i>Gece <span class="block text-[10px] text-slate-500">23:00</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="relative">
-            <input type="text" placeholder="İlaç adını yazın..." class="w-full bg-slate-800/50 border-2 border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all">
-            <button class="w-full mt-4 bg-blue-600 p-4 rounded-2xl font-black shadow-lg shadow-blue-600/20 active:scale-95 transition-all">
-                KAYDET VE TAKİBE BAŞLA
-            </button>
-        </div>
-    </main>
+    <nav class="fixed bottom-0 left-0 right-0 glass-nav p-4 flex justify-around items-center md:hidden">
+        <i class="fas fa-house text-blue-500 text-xl"></i>
+        <i class="fas fa-calendar-days text-slate-500 text-xl"></i>
+        <i class="fas fa-box-archive text-slate-500 text-xl"></i>
+        <i class="fas fa-notes-medical text-slate-500 text-xl"></i>
+    </nav>
 
     <script>
-        function toggleTimes(type) {
-            const selector = document.getElementById('timeSelector');
-            const title = document.getElementById('selectionTitle');
-            selector.classList.remove('hidden-time');
-            selector.classList.add('show-time');
-            title.innerText = type === 'ac' ? 'Aç Karnına İçilecek Zamanı Seç' : 'Tok Karnına İçilecek Zamanı Seç';
-            
-            // Seçilen butonu parlat
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        function showSchedule(type) {
+            const area = document.getElementById('scheduleArea');
+            const label = document.getElementById('typeLabel');
+            area.classList.add('active');
+            label.innerText = type + " Karnına Uygulama Zamanı";
         }
     </script>
 </body>
