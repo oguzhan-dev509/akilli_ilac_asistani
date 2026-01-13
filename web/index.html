@@ -1,38 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ilac_takibi">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>ilac_takibi</title>
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Takipİlaç | Akıllı Sağlık Asistanı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        /* iOS/Android şık çerçeve tasarımı */
+        .app-card { 
+            background: linear-gradient(145deg, #1e293b, #0f172a); 
+            border: 2px solid #334155; 
+            border-radius: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .status-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .status-btn:active { transform: scale(0.95); }
+        .hidden-time { display: none; }
+        .show-time { display: block; animation: slideDown 0.4s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+<body class="p-4">
+    <div class="flex justify-end mb-4">
+        <button class="text-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/30 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest">
+            <i class="fas fa-user-plus mr-1"></i> Giriş Yap / Kayıt Ol
+        </button>
+    </div>
+
+    <main class="max-w-md mx-auto app-card p-8 mt-4 text-center">
+        <div class="mb-8">
+            <h1 class="text-3xl font-black text-blue-400 tracking-tighter">Takipİlaç</h1>
+            <p class="text-slate-500 text-xs italic mt-1 uppercase">Dürüst Sağlık Takipçiniz</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="toggleTimes('ac')" class="status-btn bg-emerald-500/10 border-2 border-emerald-500/50 p-6 rounded-3xl group">
+                <i class="fas fa-apple-whole text-3xl text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                <span class="block font-bold uppercase text-sm">AÇ KARNINA</span>
+            </button>
+            <button onclick="toggleTimes('tok')" class="status-btn bg-orange-500/10 border-2 border-orange-500/50 p-6 rounded-3xl group">
+                <i class="fas fa-utensils text-3xl text-orange-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                <span class="block font-bold uppercase text-sm">TOK KARNINA</span>
+            </button>
+        </div>
+
+        <div id="timeSelector" class="hidden-time space-y-3 mb-8">
+            <p id="selectionTitle" class="text-xs font-bold text-slate-400 uppercase mb-4"></p>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
+                    <i class="fas fa-sun mr-2 text-yellow-500"></i>Sabah <span class="block text-[10px] text-slate-500">08:00</span>
+                </button>
+                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
+                    <i class="fas fa-cloud-sun mr-2 text-orange-400"></i>Öğle <span class="block text-[10px] text-slate-500">13:00</span>
+                </button>
+                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
+                    <i class="fas fa-cloud-moon mr-2 text-blue-400"></i>Akşam <span class="block text-[10px] text-slate-500">19:00</span>
+                </button>
+                <button class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-sm hover:border-blue-400 transition-all">
+                    <i class="fas fa-moon mr-2 text-purple-500"></i>Gece <span class="block text-[10px] text-slate-500">23:00</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="relative">
+            <input type="text" placeholder="İlaç adını yazın..." class="w-full bg-slate-800/50 border-2 border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all">
+            <button class="w-full mt-4 bg-blue-600 p-4 rounded-2xl font-black shadow-lg shadow-blue-600/20 active:scale-95 transition-all">
+                KAYDET VE TAKİBE BAŞLA
+            </button>
+        </div>
+    </main>
+
+    <script>
+        function toggleTimes(type) {
+            const selector = document.getElementById('timeSelector');
+            const title = document.getElementById('selectionTitle');
+            selector.classList.remove('hidden-time');
+            selector.classList.add('show-time');
+            title.innerText = type === 'ac' ? 'Aç Karnına İçilecek Zamanı Seç' : 'Tok Karnına İçilecek Zamanı Seç';
+            
+            // Seçilen butonu parlat
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
